@@ -5,6 +5,10 @@ simulator and Autoware. In this demo, two machines are prepared, one
 running the Carla and the other running the manual controller. Both
 machines are reachable to each other through Zenoh network.
 
+This demo heavily uses binaries packed in Docker containers. You can
+refer to this [repo](https://github.com/NEWSLabNTU/dockerfiles) to
+find the source Dockerfiles.
+
 ## Host 1: CARLA Simulator
 
 Run CARLA simulator.
