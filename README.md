@@ -6,6 +6,44 @@ running the CARLA simulator, and the other running the controller
 pad. The. controller pad will be able to control the car inside the
 CARLA. Two hosts are connected through the Zenoh network.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph Simulation Host
+        subgraph CarlaSimulator
+            sim_vehicle1[Vehicle 1]
+            sim_vehicle2[Vehicle 2]
+        end
+        carla-setup[Carla Simulation Setup]
+        carla-autoware-bridge[Carla Autoware Zenoh bridge]
+
+        CarlaSimulator-.-|Python API|carla-setup
+        CarlaSimulator-.-|Python API|carla-autoware-bridge
+    end
+
+    subgraph Vehicle 1
+        zenoh-dds-bridge1[Zenoh DDS Bridge]
+        controller1[Manual Controller]
+
+        zenoh-dds-bridge1-.-|DDS|controller1
+    end
+
+
+    subgraph Vehicle 2
+        zenoh-dds-bridge1[Zenoh DDS Bridge]
+        controller2[Manual Controller]
+
+        zenoh-dds-bridge2-.-|DDS|controller2
+    end
+
+    zenoh-net((Zenoh Network))
+    zenoh-net---|Zenoh|carla-autoware-bridge
+    zenoh-net---|Zenoh|zenoh-dds-bridge1
+    zenoh-net---|Zenoh|zenoh-dds-bridge2
+```
+
+
 ## Prepare the Environment
 
 Prepare two machines with the following configuration. The default
