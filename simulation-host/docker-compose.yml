@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  agent:
+    image: "jerry73204/carla-agent:latest"
+    network_mode: "host"
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    command: --rolename 'v1'
+  carla-autoware-bridge:
+    image: "jerry73204/carla-autoware-bridge:latest"
+    network_mode: "host"

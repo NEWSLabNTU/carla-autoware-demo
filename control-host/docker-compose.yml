@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  autoware_manual_control:
+    image: "jerry73204/autoware_manual_control:latest"
+    network_mode: "host"
+    stdin_open: true  # docker run -i
+    tty: true         # docker run -t
+  zenoh-bridge-dds:
+    image: "jerry73204/zenoh-bridge-dds:latest"
+    network_mode: "host"
+    command: -s 'v1'
