@@ -58,28 +58,22 @@ long as it's able to run the Docker.
 - Docker 20 or newer ([ubuntu setup](https://docs.docker.com/engine/install/ubuntu/))
 
 
-**Controlling host**
+**Controlling host** or a **Vehicle**
 
 - Ubuntu 20.04
 - Docker 20 or newer ([ubuntu setup](https://docs.docker.com/engine/install/ubuntu/))
 
 
-It's recommended to place these two hosts inside a local network, so
-that they discover each other by Zenoh's default behavior. If they are
-connected through the Internet, it's recommended to run the [Zenoh
-router](https://zenoh.io/docs/getting-started/quick-test/) on the
-third host.
 
 
 ## Run the Demo
 
-This tutorial provides two ways to run the demo, one using
-docker-compose, and the other running docker containers manually. Both
-methods are described in the following article. For newcomers, it's
-recommended to use docker-compose.
+Make sure these two hosts are reachable to each other via Zenoh
+network. Typically they are inside a local network. If their
+connection goes through through the Internet, run the [Zenoh
+router](https://zenoh.io/docs/getting-started/quick-test/) on the
+third host.
 
-
-## Method 1: Using docker-compose
 
 ### Host 1: Run Carla Simulator
 
@@ -96,8 +90,6 @@ it run forever.
 cd simulation-host
 docker compose up -d
 ```
-
-
 
 When you decide to turn off the bridge,
 
@@ -122,49 +114,3 @@ usage.
 docker attach control-host-autoware_manual_control-1
 ```
 
-## Method 2: Launch Containers Manually
-
-### Host 1: Run Carla Simulator
-
-Run the Carla simulator.
-
-```sh
-./CarlaUE4.sh
-```
-
-Run the agent program that configures the simulation.
-
-```sh
-docker run -it \
-    --network host \
-    -e DISPLAY=$DISPLAY \
-    -v /tmp/.X11-unix:/tmp/.X11-unix \
-    jerry73204/carla-agent:latest \
-    --rolename 'v1'
-```
-
-Run the Carla/Autoware bridge.
-
-```sh
-docker run -it --network host jerry73204/carla-autoware-bridge:latest
-```
-
-### Host 2: Controller
-
-
-Run the manual controller.
-
-```sh
-docker run -it \
-    --network host \
-    jerry73204/autoware_manual_control:latest
-```
-
-Run the Zenoh/DDS bridge.
-
-```sh
-docker run -it \
-    --network host \
-    jerry73204/zenoh-bridge-dds:latest \
-    -s 'v1'
-```
